@@ -1,0 +1,13 @@
+{
+	"/": [],
+	"/app": [],
+	"/app/orgs": [],
+	"/app/org/[orgId]": [],
+	"/app/org/[orgId]/spaces": [],
+	"/app/org/[orgId]/space/[spaceId]": [],
+	"/app/org/[orgId]/space/[spaceId]/app/[appId]": [],
+	"/app/org/[orgId]/space/[spaceId]/app/[appId]/instance/[instanceId]": [],
+	"/app/org/[orgId]/space/[spaceId]/app/[appId]/scale": [],
+	"/app/org/[orgId]/space/[spaceId]/deploy": [],
+	"/login": []
+}

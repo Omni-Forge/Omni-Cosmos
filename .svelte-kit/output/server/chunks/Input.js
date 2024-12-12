@@ -1,4 +1,4 @@
-import { V as rest_props, Q as setContext, W as fallback, $ as element, Z as bind_props, R as pop, _ as sanitize_props, P as push, Y as slot, X as spread_attributes, a5 as getContext, a8 as escape_html, a2 as spread_props, ad as invalid_default_snippet, a0 as attr, T as sanitize_slots, a1 as stringify } from "./index.js";
+import { Y as sanitize_props, Z as rest_props, Q as push, R as setContext, _ as fallback, a6 as element, X as slot, $ as spread_attributes, a1 as bind_props, S as pop, a4 as getContext, T as escape_html, a2 as spread_props, a0 as attr, ac as invalid_default_snippet, a5 as sanitize_slots, a7 as stringify } from "./index.js";
 import { twMerge } from "tailwind-merge";
 const bgColors = {
   gray: "bg-gray-50 dark:bg-gray-800",
@@ -581,7 +581,6 @@ function Input($$payload, $$props) {
 }
 export {
   Button as B,
-  CloseButton as C,
   Frame as F,
   Input as I,
   ToolbarButton as T,

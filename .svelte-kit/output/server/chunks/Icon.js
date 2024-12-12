@@ -1,6 +1,6 @@
-import { V as rest_props, W as fallback, ac as ensure_array_like, X as spread_attributes, $ as element, Y as slot, Z as bind_props, R as pop, _ as sanitize_props, P as push } from "./index.js";
+import { Y as sanitize_props, Z as rest_props, Q as push, _ as fallback, a3 as ensure_array_like, $ as spread_attributes, a6 as element, X as slot, a1 as bind_props, S as pop } from "./index.js";
 /**
- * @license lucide-svelte v0.456.0 - ISC
+ * @license lucide-svelte v0.460.1 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.

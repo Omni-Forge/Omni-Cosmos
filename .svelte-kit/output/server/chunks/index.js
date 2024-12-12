@@ -36,6 +36,7 @@ const DESTROYED = 1 << 13;
 const EFFECT_RAN = 1 << 14;
 const HEAD_EFFECT = 1 << 18;
 const EFFECT_HAS_DERIVED = 1 << 19;
+const LEGACY_PROPS = Symbol("legacy props");
 function effect_update_depth_exceeded() {
   {
     throw new Error("effect_update_depth_exceeded");
@@ -760,6 +761,22 @@ function pop$1(component) {
     {}
   );
 }
+const ATTR_REGEX = /[&"<]/g;
+const CONTENT_REGEX = /[&<]/g;
+function escape_html(value, is_attr) {
+  const str = String(value ?? "");
+  const pattern = is_attr ? ATTR_REGEX : CONTENT_REGEX;
+  pattern.lastIndex = 0;
+  let escaped = "";
+  let last = 0;
+  while (pattern.test(str)) {
+    const i = pattern.lastIndex - 1;
+    const ch = str[i];
+    escaped += str.substring(last, i) + (ch === "&" ? "&amp;" : ch === '"' ? "&quot;" : "&lt;");
+    last = i + 1;
+  }
+  return escaped + str.substring(last);
+}
 const VOID_ELEMENT_NAMES = [
   "area",
   "base",
@@ -815,6 +832,18 @@ const PASSIVE_EVENTS = ["touchstart", "touchmove"];
 function is_passive_event(name) {
   return PASSIVE_EVENTS.includes(name);
 }
+const replacements = {
+  translate: /* @__PURE__ */ new Map([
+    [true, "yes"],
+    [false, "no"]
+  ])
+};
+function attr(name, value, is_boolean = false) {
+  if (value == null || !value && is_boolean || value === "" && name === "class") return "";
+  const normalized = name in replacements && replacements[name].get(value) || value;
+  const assignment = is_boolean ? "" : `="${escape_html(normalized, true)}"`;
+  return ` ${name}${assignment}`;
+}
 function subscribe_to_store(store, run, invalidate) {
   if (store == null) {
     run(void 0);
@@ -829,22 +858,6 @@ function subscribe_to_store(store, run, invalidate) {
     )
   );
   return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
-}
-const ATTR_REGEX = /[&"<]/g;
-const CONTENT_REGEX = /[&<]/g;
-function escape_html(value, is_attr) {
-  const str = String(value ?? "");
-  const pattern = is_attr ? ATTR_REGEX : CONTENT_REGEX;
-  pattern.lastIndex = 0;
-  let escaped = "";
-  let last = 0;
-  while (pattern.test(str)) {
-    const i = pattern.lastIndex - 1;
-    const ch = str[i];
-    escaped += str.substring(last, i) + (ch === "&" ? "&amp;" : ch === '"' ? "&quot;" : "&lt;");
-    last = i + 1;
-  }
-  return escaped + str.substring(last);
 }
 var current_component = null;
 function getContext(key) {
@@ -952,18 +965,6 @@ function render(component, options = {}) {
     body: payload.out
   };
 }
-const replacements = {
-  translate: /* @__PURE__ */ new Map([
-    [true, "yes"],
-    [false, "no"]
-  ])
-};
-function attr(name, value, is_boolean = false) {
-  if (value == null || !value && is_boolean || value === "" && name === "class") return "";
-  const normalized = name in replacements && replacements[name].get(value) || value;
-  const assignment = is_boolean ? "" : `="${escape_html(normalized, true)}"`;
-  return ` ${name}${assignment}`;
-}
 function spread_attributes(attrs, classes, styles, flags = 0) {
   let attr_str = "";
   let name;
@@ -1067,49 +1068,51 @@ function ensure_array_like(array_like_or_iterator) {
   return [];
 }
 export {
-  element as $,
-  effect_root as A,
+  spread_attributes as $,
+  branch as A,
   BLOCK_EFFECT as B,
   CLEAN as C,
   DEV as D,
-  is_passive_event as E,
-  create_text as F,
-  branch as G,
+  push$1 as E,
+  component_context as F,
+  pop$1 as G,
   HYDRATION_ERROR as H,
-  push$1 as I,
-  pop$1 as J,
-  component_context as K,
-  get as L,
+  HYDRATION_END as I,
+  hydration_failed as J,
+  clear_text_content as K,
+  LEGACY_PROPS as L,
   MAYBE_DIRTY as M,
-  flush_sync as N,
-  render as O,
-  push as P,
-  setContext as Q,
-  pop as R,
-  BROWSER as S,
-  sanitize_slots as T,
+  get as N,
+  flush_sync as O,
+  render as P,
+  push as Q,
+  setContext as R,
+  pop as S,
+  escape_html as T,
   UNOWNED as U,
-  rest_props as V,
-  fallback as W,
-  spread_attributes as X,
-  slot as Y,
-  bind_props as Z,
-  sanitize_props as _,
+  store_get as V,
+  unsubscribe_stores as W,
+  slot as X,
+  sanitize_props as Y,
+  rest_props as Z,
+  fallback as _,
   active_reaction as a,
   attr as a0,
-  stringify as a1,
+  bind_props as a1,
   spread_props as a2,
-  copy_payload as a3,
-  assign_payload as a4,
-  getContext as a5,
-  store_get as a6,
-  unsubscribe_stores as a7,
-  escape_html as a8,
-  noop as a9,
-  subscribe_to_store as aa,
-  run_all as ab,
-  ensure_array_like as ac,
-  invalid_default_snippet as ad,
+  ensure_array_like as a3,
+  getContext as a4,
+  sanitize_slots as a5,
+  element as a6,
+  stringify as a7,
+  copy_payload as a8,
+  assign_payload as a9,
+  current_component as aa,
+  BROWSER as ab,
+  invalid_default_snippet as ac,
+  noop as ad,
+  subscribe_to_store as ae,
+  run_all as af,
   DERIVED as b,
   increment_version as c,
   derived_sources as d,
@@ -1131,8 +1134,8 @@ export {
   get_first_child as t,
   untracked_writes as u,
   HYDRATION_START as v,
-  HYDRATION_END as w,
-  hydration_failed as x,
-  clear_text_content as y,
-  array_from as z
+  is_passive_event as w,
+  array_from as x,
+  effect_root as y,
+  create_text as z
 };

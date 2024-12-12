@@ -1,5 +1,5 @@
-import { a as active_reaction, i as is_runes, b as DERIVED, B as BLOCK_EFFECT, d as derived_sources, s as state_unsafe_mutation, c as increment_version, e as DIRTY, f as set_signal_status, C as CLEAN, U as UNOWNED, g as schedule_effect, M as MAYBE_DIRTY, h as active_effect, j as BRANCH_EFFECT, n as new_deps, u as untracked_writes, k as set_untracked_writes, H as HYDRATION_ERROR, l as get_next_sibling, m as define_property, o as set_active_reaction, p as set_active_effect, q as is_array, r as init_operations, t as get_first_child, v as HYDRATION_START, w as HYDRATION_END, x as hydration_failed, y as clear_text_content, z as array_from, A as effect_root, E as is_passive_event, F as create_text, G as branch, I as push, J as pop, K as component_context, L as get, N as flush_sync, O as render, P as push$1, Q as setContext, R as pop$1 } from "./index.js";
-import { s as safe_equals, e as equals } from "./equality.js";
+import { a as active_reaction, i as is_runes, b as DERIVED, B as BLOCK_EFFECT, d as derived_sources, s as state_unsafe_mutation, c as increment_version, e as DIRTY, f as set_signal_status, C as CLEAN, U as UNOWNED, M as MAYBE_DIRTY, g as schedule_effect, h as active_effect, j as BRANCH_EFFECT, n as new_deps, u as untracked_writes, k as set_untracked_writes, H as HYDRATION_ERROR, l as get_next_sibling, m as define_property, o as set_active_reaction, p as set_active_effect, q as is_array, r as init_operations, t as get_first_child, v as HYDRATION_START, w as is_passive_event, x as array_from, y as effect_root, z as create_text, A as branch, E as push, F as component_context, G as pop, I as HYDRATION_END, J as hydration_failed, K as clear_text_content, L as LEGACY_PROPS, N as get, O as flush_sync, P as render, Q as push$1, R as setContext, S as pop$1 } from "./index.js";
+import { e as equals, s as safe_equals } from "./equality.js";
 let base = "";
 let assets = base;
 const initial = { base, assets };
@@ -389,6 +389,7 @@ class Svelte4Component {
           return get(sources.get(prop) ?? add_source(prop, Reflect.get(target, prop)));
         },
         has(target, prop) {
+          if (prop === LEGACY_PROPS) return true;
           get(sources.get(prop) ?? add_source(prop, Reflect.get(target, prop)));
           return Reflect.has(target, prop);
         },
@@ -489,7 +490,8 @@ function Root($$payload, $$props) {
     components = [],
     form,
     data_0 = null,
-    data_1 = null
+    data_1 = null,
+    data_2 = null
   } = $$props;
   {
     setContext("__svelte__", stores);
@@ -497,7 +499,7 @@ function Root($$payload, $$props) {
   {
     stores.page.set(page);
   }
-  const Pyramid_1 = constructors[1];
+  const Pyramid_2 = constructors[2];
   if (constructors[1]) {
     $$payload.out += "<!--[-->";
     const Pyramid_0 = constructors[0];
@@ -506,9 +508,29 @@ function Root($$payload, $$props) {
       data: data_0,
       form,
       children: ($$payload2) => {
-        $$payload2.out += `<!---->`;
-        Pyramid_1($$payload2, { data: data_1, form });
-        $$payload2.out += `<!---->`;
+        if (constructors[2]) {
+          $$payload2.out += "<!--[-->";
+          const Pyramid_1 = constructors[1];
+          $$payload2.out += `<!---->`;
+          Pyramid_1($$payload2, {
+            data: data_1,
+            form,
+            children: ($$payload3) => {
+              $$payload3.out += `<!---->`;
+              Pyramid_2($$payload3, { data: data_2, form });
+              $$payload3.out += `<!---->`;
+            },
+            $$slots: { default: true }
+          });
+          $$payload2.out += `<!---->`;
+        } else {
+          $$payload2.out += "<!--[!-->";
+          const Pyramid_1 = constructors[1];
+          $$payload2.out += `<!---->`;
+          Pyramid_1($$payload2, { data: data_1, form });
+          $$payload2.out += `<!---->`;
+        }
+        $$payload2.out += `<!--]-->`;
       },
       $$slots: { default: true }
     });
@@ -614,24 +636,22 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1c67c0o"
+  version_hash: "17uj5rx"
 };
 async function get_hooks() {
-  return {
-    ...await import("./hooks.server.js")
-  };
+  return {};
 }
 export {
   assets as a,
   base as b,
   read_implementation as c,
   options as d,
-  set_private_env as e,
-  prerendering as f,
-  set_public_env as g,
-  get_hooks as h,
-  set_safe_public_env as i,
-  set_read_implementation as j,
+  set_public_env as e,
+  set_safe_public_env as f,
+  get_hooks as g,
+  set_read_implementation as h,
+  set_private_env as i,
+  prerendering as j,
   set_assets as k,
   set_building as l,
   set_manifest as m,

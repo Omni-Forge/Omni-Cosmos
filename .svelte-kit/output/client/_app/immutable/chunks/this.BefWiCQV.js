@@ -1,0 +1,1 @@
+import{v as S,x as h,y as k,S as x,z as T}from"./runtime.BpsoJ9mv.js";function t(r,i){return r===i||(r==null?void 0:r[x])===i}function y(r={},i,a,c){return S(()=>{var f,s;return h(()=>{f=s,s=[],k(()=>{r!==a(...s)&&(i(r,...s),f&&t(a(...f),r)&&i(null,...f))})}),()=>{T(()=>{s&&t(a(...s),r)&&i(null,...s)})}}),r}export{y as b};

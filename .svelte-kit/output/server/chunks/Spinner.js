@@ -1,4 +1,4 @@
-import { V as rest_props, W as fallback, X as spread_attributes, a0 as attr, Z as bind_props, R as pop, _ as sanitize_props, P as push } from "./index.js";
+import { Y as sanitize_props, Z as rest_props, Q as push, _ as fallback, $ as spread_attributes, a0 as attr, a1 as bind_props, S as pop } from "./index.js";
 import { twMerge } from "tailwind-merge";
 function Spinner($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);

@@ -1,8 +1,7 @@
-import { V as rest_props, P as push, W as fallback, a2 as spread_props, a0 as attr, Y as slot, Z as bind_props, R as pop, _ as sanitize_props, a3 as copy_payload, a4 as assign_payload, a8 as escape_html } from "../../../chunks/index.js";
+import { Y as sanitize_props, Z as rest_props, Q as push, _ as fallback, a2 as spread_props, a0 as attr, X as slot, a1 as bind_props, S as pop, $ as spread_attributes, a8 as copy_payload, T as escape_html, a9 as assign_payload } from "../../../chunks/index.js";
 import { F as Frame, I as Input, B as Button } from "../../../chunks/Input.js";
 import { twMerge } from "tailwind-merge";
-import { L as Label } from "../../../chunks/Label.js";
-import "../../../chunks/client.js";
+import "../../../chunks/auth.js";
 function Card($$payload, $$props) {
   const $$sanitized_props = sanitize_props($$props);
   const $$restProps = rest_props($$sanitized_props, [
@@ -83,6 +82,39 @@ function Card($$payload, $$props) {
   });
   pop();
 }
+function Label($$payload, $$props) {
+  const $$sanitized_props = sanitize_props($$props);
+  const $$restProps = rest_props($$sanitized_props, ["color", "defaultClass", "show"]);
+  push();
+  let labelClass;
+  let color = fallback($$props["color"], "gray");
+  let defaultClass = fallback($$props["defaultClass"], "text-sm rtl:text-right font-medium block");
+  let show = fallback($$props["show"], true);
+  const colorClasses = {
+    gray: "text-gray-900 dark:text-gray-300",
+    green: "text-green-700 dark:text-green-500",
+    red: "text-red-700 dark:text-red-500",
+    disabled: "text-gray-400 dark:text-gray-500 grayscale contrast-50"
+  };
+  {
+    color = color;
+  }
+  labelClass = twMerge(defaultClass, colorClasses[color], $$sanitized_props.class);
+  if (show) {
+    $$payload.out += "<!--[-->";
+    $$payload.out += `<label${spread_attributes({ ...$$restProps, class: labelClass })}><!---->`;
+    slot($$payload, $$props, "default", {}, null);
+    $$payload.out += `<!----></label>`;
+  } else {
+    $$payload.out += "<!--[!-->";
+    $$payload.out += `<!---->`;
+    slot($$payload, $$props, "default", {}, null);
+    $$payload.out += `<!---->`;
+  }
+  $$payload.out += `<!--]-->`;
+  bind_props($$props, { color, defaultClass, show });
+  pop();
+}
 function _page($$payload, $$props) {
   push();
   let username = "";
@@ -91,11 +123,11 @@ function _page($$payload, $$props) {
   let $$settled = true;
   let $$inner_payload;
   function $$render_inner($$payload2) {
-    $$payload2.out += `<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">`;
+    $$payload2.out += `<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-black">`;
     Card($$payload2, {
-      class: "w-full max-w-md space-y-8",
+      class: "w-full max-w-md space-y-8 bg-gray-800 text-white",
       children: ($$payload3) => {
-        $$payload3.out += `<div><img class="mx-auto h-12 w-auto" src="/cf-logo.svg" alt="Cloud Foundry"> <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2></div> <form class="mt-8 space-y-6">`;
+        $$payload3.out += `<div><img class="mx-auto h-12 w-auto" src="/cf-logo.svg" alt="Cloud Foundry"> <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-white">Sign in to your account</h2></div> <form class="mt-8 space-y-6">`;
         {
           $$payload3.out += "<!--[!-->";
         }
@@ -121,7 +153,8 @@ function _page($$payload, $$props) {
             username = $$value;
             $$settled = false;
           },
-          placeholder: "Username"
+          placeholder: "Username",
+          class: "bg-gray-700 text-white"
         });
         $$payload3.out += `<!----></div> <div>`;
         Label($$payload3, {
@@ -145,13 +178,13 @@ function _page($$payload, $$props) {
             password = $$value;
             $$settled = false;
           },
-          placeholder: "Password"
+          placeholder: "Password",
+          class: "bg-gray-700 text-white"
         });
         $$payload3.out += `<!----></div></div> <div>`;
         Button($$payload3, {
           type: "submit",
-          class: "w-full",
-          color: "blue",
+          class: "w-full bg-blue-600 hover:bg-blue-700 text-white",
           disabled: loading,
           children: ($$payload4) => {
             $$payload4.out += `<!---->${escape_html("Sign in")}`;
